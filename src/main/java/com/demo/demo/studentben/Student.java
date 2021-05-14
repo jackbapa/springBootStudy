@@ -4,8 +4,21 @@ public class Student {
     public String name;
     public String sex;
     public String age;
-    public Student(){
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer id;
+
+    public Student(String name,String sex, String age){
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
     }
 
     public String getName() {
