@@ -1,8 +1,6 @@
 package com.demo.demo.controller;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +17,7 @@ public class stuContrler {
     @Autowired
    studentMaper studentMaper;
 
+//    依据id查询
     @GetMapping("id/{id}")
     public Map<String, Object> getByID(@PathVariable Integer id) {
         Student stu = studentMaper.getStuByID(id);
@@ -29,6 +28,7 @@ public class stuContrler {
         return rep;
     }
 
+//    依据姓名查询
     @GetMapping("name/{name}")
     public Map<String, Object> getByName(@PathVariable String name){
         Student stu = studentMaper.getStuByName(name);
@@ -39,6 +39,7 @@ public class stuContrler {
         return rep;
     }
 
+//    增加条目
     @GetMapping("/add/{name}/{sex}/{age}")
     public Map<String, String> addStu(@PathVariable String name,
                                       @PathVariable String sex,
@@ -51,11 +52,43 @@ public class stuContrler {
             rep.put("status","成功");
         }catch (Exception e){
             rep.put("status","失败");
-            rep.put("failreson",e.toString());
+            rep.put("failReson",e.toString());
         }
         return rep;
-
     }
+
+//    依据id更新姓名
+    @GetMapping("/update/{id}/{name}")
+    public Map<String, String> update(@PathVariable Integer id,
+                                      @PathVariable String name){
+
+        Map<String,String> rep = new HashMap<String, String>();
+        try{
+            studentMaper.updateName(id,name);
+            }catch (Exception e){
+            rep.put("status","失败");
+            rep.put("failReson",e.toString());
+            return rep;
+        }
+        rep.put("status","成功");
+        return rep;
+    }
+
+//    依据姓名删除条目
+    @GetMapping("/delete/{name}")
+    public Map<String, String> delete(@PathVariable String name){
+        Map<String,String> rep = new HashMap<String, String>();
+        try{
+            studentMaper.deleteByName(name);
+        }catch (Exception e){
+            rep.put("status","失败");
+            rep.put("failReson",e.toString());
+            return rep;
+        }
+        rep.put("status","成功");
+        return rep;
+    }
+
 
 
 }
