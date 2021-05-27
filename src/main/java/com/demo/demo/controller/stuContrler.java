@@ -89,6 +89,17 @@ public class stuContrler {
         return rep;
     }
 
+//    本地导通测试
+    @GetMapping("test/{id}")
+    public Map<String, Object> get(@PathVariable Integer id) {
+//        Student stu = studentMaper.getStuByID(id);
+        Map<String,Object> rep = new HashMap<String, Object>();
+        rep.put("姓名","1");
+        rep.put("性别","2");
+        rep.put("年龄","3");
+        return rep;
+    }
+
 
 
 }

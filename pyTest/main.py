@@ -220,9 +220,9 @@ def testMix():
     耗时：2.2354111671447754s
     :return:
     """
-    mixControler = MixBench(url="https://baidu.com", pNum=5, tNum=10)
+    mixControler = MixBench(url="http://127.0.0.1:8080/test/4", pNum=20, tNum=100)
     mixControler.start()
 
 
 if __name__ == "__main__":
-    testP()
+    testMix()
