@@ -10,30 +10,41 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.RunnableFuture;
 
 //相关单元测试注解
 //引入Application context
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ThreadStudy {
+//    直接使用自定义的MyPooL线程池
     @Autowired
     public ThreadPoolTaskExecutor MyPool;
-//测试函数使用@test注解
-    @Test
-    public void AsyncTest() throws ExecutionException, InterruptedException {
-        CompletableFuture<Integer> res = this.asyncTest();
-        System.out.println(res.get());
-    }
-    @Test
-    public void poolTest(){
-        System.out.println(this.MyPool);
-    }
 
+//    利用Async注解实现MyPooL线程池
     @Async("MyPool")
     public CompletableFuture<Integer> asyncTest(){
         return CompletableFuture.supplyAsync(
                 ()-> 1
         );
     }
+
+    //@test单元测试
+    @Test
+    public void AsyncTest() throws ExecutionException, InterruptedException {
+        CompletableFuture<Integer> res = this.asyncTest();
+        System.out.println(res.get());
+    }
+
+//测试 @Autowired装配的线程池
+    @Test
+    public void poolTest() throws ExecutionException, InterruptedException {
+        System.out.println(this.MyPool);
+        Future<Integer> myFuture= this.MyPool.submit(()->1);
+        System.out.println(myFuture.get());
+    }
+
+
 
 }
