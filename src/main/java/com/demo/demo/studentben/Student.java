@@ -4,7 +4,12 @@ public class Student {
     public String name;
     public String sex;
     public String age;
-    public Integer id;
+//    应用MongDb时会报错：
+//    Cannot autogenerate id of type java.lang.Integer for entity of type
+//    因为MongDB会将id作为的唯一id，换句话说，此处id与MongDB的_id键冲突
+//    故改为其他，例如objectid
+//    public Integer id;
+    public Integer objectid;
 
     public Student(String name,String sex, String age){
         this.name = name;
@@ -13,11 +18,11 @@ public class Student {
     }
 
     public Integer getId() {
-        return id;
+        return objectid;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.objectid = id;
     }
 
     public String getName() {

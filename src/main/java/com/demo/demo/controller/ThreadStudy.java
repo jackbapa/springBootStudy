@@ -3,11 +3,13 @@ package com.demo.demo.controller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -19,8 +21,12 @@ import java.util.concurrent.RunnableFuture;
 @SpringBootTest
 public class ThreadStudy {
 //    直接使用自定义的MyPooL线程池
-    @Autowired
+    @Resource(name = "MyPool")
     public ThreadPoolTaskExecutor MyPool;
+//    也可,按类型匹配，然后指定名为MyPool的线程池
+//      @Autowired
+//      @Qualifier("MyPool")
+
 
 //    利用Async注解实现MyPooL线程池
     @Async("MyPool")
