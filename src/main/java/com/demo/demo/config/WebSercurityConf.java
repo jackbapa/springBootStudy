@@ -1,5 +1,6 @@
 package com.demo.demo.config;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,7 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,12 +25,11 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSercurityConf extends WebSecurityConfigurerAdapter {
 
-//    public userdetail GetUserDetailsService(){
-//        return new userdetail();
-//    }
+    public userdetail GetUserDetailsService(){
+        return new userdetail();
+    }
 
-    @Autowired
-    public UserDetailsService UesrDetail;
+
 
     public PasswordEncoder GetPassWordEncoder(){
         return new BCryptPasswordEncoder();
@@ -39,11 +38,15 @@ public class WebSercurityConf extends WebSecurityConfigurerAdapter {
     //    认证
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.UesrDetail).passwordEncoder(GetPassWordEncoder());
-        super.configure(auth);
+        auth.userDetailsService(this.GetUserDetailsService()).passwordEncoder(this.GetPassWordEncoder());
     }
 
     //    权
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,7 +54,7 @@ public class WebSercurityConf extends WebSecurityConfigurerAdapter {
 //   antMatchers("/", "/home")过滤器，具体筛选 authorizeRequests() 匹配到的请求
 //   authenticated()需要认证
         http.authorizeRequests()
-                .antMatchers("/test/1").hasRole("admin").and().authorizeRequests()
+                .antMatchers("/test/1/*").hasRole("admin").and().authorizeRequests()
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .and().rememberMe();
@@ -69,8 +72,10 @@ class  userdetail implements UserDetailsService{
         return AouthList;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws  UsernameNotFoundException {
-       return new User("wy","123456",GetAouthL());
+//        这里的password也要被加密
+       return new User("wy",new BCryptPasswordEncoder().encode("123456"),GetAouthL());
     }
 }
