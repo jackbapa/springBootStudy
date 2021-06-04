@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Configuration
+//@Configuration
+//@EnableWebSecurity中带有 Configuration
 @EnableWebSecurity
 public class WebSercurityConf extends WebSecurityConfigurerAdapter {
 
@@ -75,6 +76,7 @@ class  userdetail implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws  UsernameNotFoundException {
+
 //        这里的password也要被加密
        return new User("wy",new BCryptPasswordEncoder().encode("123456"),GetAouthL());
     }
