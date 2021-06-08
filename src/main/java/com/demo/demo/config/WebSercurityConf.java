@@ -27,9 +27,11 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSercurityConf extends WebSecurityConfigurerAdapter {
 
+//    可以不注入spring容器直接用，比如这里的userdetail
     public userdetail GetUserDetailsService(){
         return new userdetail();
     }
+
 
     @Bean
     @Override
@@ -37,6 +39,9 @@ public class WebSercurityConf extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+//    可以不注入spring容器直接用
+//    但新版本的spring强制检查容器中的 passWordEncoder，如果没有，报Null错
+//    尤其是使用ouath2库时
     @Bean
     public PasswordEncoder passWordEncoder(){
         return new BCryptPasswordEncoder();
@@ -60,7 +65,8 @@ public class WebSercurityConf extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/test/1/*").hasRole("admin")
                 .and().authorizeRequests().antMatchers("/oauth/*").permitAll()
-//                .and().authorizeRequests().anyRequest().authenticated()
+                .and().authorizeRequests().antMatchers("/login/").permitAll()
+                .and().authorizeRequests().anyRequest().authenticated()
                 .and().formLogin()
                 .and().rememberMe();
     }

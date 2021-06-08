@@ -24,6 +24,7 @@ dependencies {
 
 //spring-boot-starter-security 就是传说中的SpringSecurity库
 // spring-cloud-security 是cloud的security也可加上，cloudSecurity应该是包括了bootSecurity的一些类
+//     Spring Cloud Security 是Spring Security 的超集
     implementation 'org.springframework.cloud:spring-cloud-security'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
