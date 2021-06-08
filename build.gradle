@@ -19,14 +19,33 @@ dependencies {
     implementation 'junit:junit:4.12'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+
+//spring-boot-starter-security 就是传说中的SpringSecurity库
+// spring-cloud-security 是cloud的security也可加上，cloudSecurity应该是包括了bootSecurity的一些类
+    implementation 'org.springframework.cloud:spring-cloud-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+//    我无语了，spring-cloud-starter-oauth2这个库必须加版本号才能导入，
+//    因为SpringInit在这个库的导入上有问题（https://start.spring.io/）
+//    这个库是@EnableAuthorizationServer注解的来源
+//    这个库是AuthorizationServerConfigurerAdapter 注解的来源
+//    完整版本号2.2.5.RELEASE必须要有REALEASE，不可省略REALEASE
+//    REALEASE来源maven仓库的url,最后一个目录就是完整的版本号
+//    -->>https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-oauth2/2.2.4.RELEASE
+    implementation 'org.springframework.cloud:spring-cloud-starter-oauth2:2.2.5.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
 //    不要只使用testimlemention引入该测试包，否则无法引入@SpringBootTest注解的依赖
     implementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
 }
 
 test {
@@ -35,5 +54,6 @@ test {
 dependencyManagement {
     imports {
         mavenBom 'org.testcontainers:testcontainers-bom:1.15.3'
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2020.0.3'
     }
 }

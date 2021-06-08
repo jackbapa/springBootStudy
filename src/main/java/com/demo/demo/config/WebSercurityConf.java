@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -30,24 +31,26 @@ public class WebSercurityConf extends WebSecurityConfigurerAdapter {
         return new userdetail();
     }
 
+    @Bean
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 
-
-    public PasswordEncoder GetPassWordEncoder(){
+    @Bean
+    public PasswordEncoder passWordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
     //    认证
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.GetUserDetailsService()).passwordEncoder(this.GetPassWordEncoder());
+        auth.userDetailsService(this.GetUserDetailsService())
+                .passwordEncoder(this.passWordEncoder());
     }
+
 
     //    权
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -55,8 +58,9 @@ public class WebSercurityConf extends WebSecurityConfigurerAdapter {
 //   antMatchers("/", "/home")过滤器，具体筛选 authorizeRequests() 匹配到的请求
 //   authenticated()需要认证
         http.authorizeRequests()
-                .antMatchers("/test/1/*").hasRole("admin").and().authorizeRequests()
-                .anyRequest().authenticated()
+                .antMatchers("/test/1/*").hasRole("admin")
+                .and().authorizeRequests().antMatchers("/oauth/*").permitAll()
+//                .and().authorizeRequests().anyRequest().authenticated()
                 .and().formLogin()
                 .and().rememberMe();
     }
@@ -78,6 +82,7 @@ class  userdetail implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws  UsernameNotFoundException {
 
 //        这里的password也要被加密
-       return new User("wy",new BCryptPasswordEncoder().encode("123456"),GetAouthL());
+       return new User("wy",
+               new BCryptPasswordEncoder().encode("123456"),GetAouthL());
     }
 }
