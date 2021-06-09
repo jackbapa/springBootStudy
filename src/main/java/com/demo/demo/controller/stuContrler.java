@@ -2,6 +2,7 @@ package com.demo.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import com.demo.demo.studentben.Student;
 import java.util.HashMap;
 import java.util.Map;
 import com.demo.demo.mapper.stumongodb;
+
 
 @RestController
 public class stuContrler {
@@ -93,6 +95,16 @@ public class stuContrler {
 //    本地导通测试
     @GetMapping("test/{id}")
     public Map<String, Object> get(@PathVariable Integer id) {
+//        Student stu = studentMaper.getStuByID(id);
+        Map<String,Object> rep = new HashMap<String, Object>();
+        rep.put("姓名","1");
+        rep.put("性别","2");
+        rep.put("年龄","3");
+        return rep;
+    }
+
+    @GetMapping("test1/{id}")
+    public Map<String, Object> get1(@PathVariable Integer id) {
 //        Student stu = studentMaper.getStuByID(id);
         Map<String,Object> rep = new HashMap<String, Object>();
         rep.put("姓名","1");

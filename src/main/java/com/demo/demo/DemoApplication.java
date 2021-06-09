@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @SpringBootApplication
 //开启resourceServer和AuthorizationServer
 //即ouath2对应的授权服务器和资源服务器
-@EnableResourceServer
+//@EnableResourceServer
 @EnableAuthorizationServer
 public class DemoApplication {
 

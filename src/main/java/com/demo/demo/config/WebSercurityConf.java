@@ -64,6 +64,7 @@ public class WebSercurityConf extends WebSecurityConfigurerAdapter {
 //   authenticated()需要认证
         http.authorizeRequests()
                 .antMatchers("/test/1/*").hasRole("admin")
+                .and().authorizeRequests().antMatchers("/test1/1").permitAll()
                 .and().authorizeRequests().antMatchers("/oauth/*").permitAll()
                 .and().authorizeRequests().antMatchers("/login/").permitAll()
                 .and().authorizeRequests().anyRequest().authenticated()
